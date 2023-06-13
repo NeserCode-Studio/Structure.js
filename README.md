@@ -1,2 +1,3 @@
-# Stack.js
- Stack for JavaScript.
+# Structure.js
+
+Structures for JavaScript.

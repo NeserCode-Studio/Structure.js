@@ -7,15 +7,21 @@ export class Stack<T> {
 		top: 0,
 		bottom: 0,
 	}
+	private lastNotEmptyIndex: number = -1
 
 	constructor(...args: T[]) {
+		this.pointer.top = -1
+		this.pointer.bottom = -1
+
 		if (args.length) {
 			this.intoStack(...args)
 			this.MaxSize = args.length
 		}
 
-		this.pointer.top = -1
-		this.pointer.bottom = -1
+		// last not empty index
+		let index = this.nodes.length - 1
+		while (index >= 0 && this.nodes[index] === undefined) index--
+		this.lastNotEmptyIndex = index
 	}
 
 	get length(): number {
@@ -23,18 +29,19 @@ export class Stack<T> {
 	}
 
 	get nodeLength(): number {
-		return this.nodes.filter((node) => node !== undefined).length
+		// last not empty index + 1
+		return this.lastNotEmptyIndex + 1
 	}
 
 	get isEmpty(): boolean {
-		return this.nodes.length === 0
+		return this.nodes.length === 0 || this.lastNotEmptyIndex === -1
 	}
 
 	set MaxSize(size: number) {
 		if (size < this.nodes.length) {
 			this.nodes.length = size
 			console.warn(
-				"Stack size is smaller than the current stack length, stack will be truncated."
+				"/SET_MAXSIZE: Stack size is smaller than the current stack length, stack will be truncated."
 			)
 		} else this.nodes.length = size
 
@@ -52,6 +59,7 @@ export class Stack<T> {
 	public intoStack(...args: T[]): void {
 		if (args.length === 0) throw new Error("Nothing was push into stack.")
 		args.forEach((arg) => this.push(arg))
+		console.log("/INTO_STACK: ", this.nodes)
 	}
 
 	public clear(): void {
@@ -59,20 +67,21 @@ export class Stack<T> {
 	}
 
 	public push(Node: T): number {
-		if (this.nodes.length === this.maxSize)
+		if (this.nodeLength === this.MaxSize)
 			throw new Error(
 				`Stack is full, you cannot push anything. Pushing ${Node.toString()} failed.`
 			)
 
-		// find the first empty index
-		const index = this.nodes.findIndex((node) => node === undefined)
+		this.top++
 
-		if (index !== -1) {
-			this.nodes[index] = Node
-			return index
+		if (this.nodeLength === this.length) {
+			this.lastNotEmptyIndex++
+			return this.nodes.push(Node)
+		} else {
+			this.nodes[this.lastNotEmptyIndex + 1] = Node
+			this.lastNotEmptyIndex++
+			return this.nodeLength
 		}
-
-		return this.nodes.push(Node)
 	}
 
 	public pop(): T {
@@ -115,12 +124,17 @@ export class Stack<T> {
 
 	get nextNode(): T {
 		if (this.next === this.nodes.length)
-			console.warn("This is the last node.")
+			console.warn("/GET_NEXT_NODE: This is the last node.")
 		return this.nodes[this.next]
 	}
 
 	get prevNode(): T {
-		if (this.prev === -1) console.warn("This is the first node.")
+		if (this.prev === -1)
+			console.warn("/GET_PREV_NODE: This is the first node.")
 		return this.nodes[this.prev]
+	}
+
+	get roundSet(): T[] {
+		return [this.prevNode, this.nodes[this.pointer.top], this.nextNode]
 	}
 }
