@@ -1,6 +1,8 @@
 {
 	"scripts": {
-		"dev": "ts-node-dev --respawn --ignore-watch node_modules src/runner.ts"
+		"dev": "ts-node-dev --respawn --ignore-watch node_modules src/runner.ts",
+		"dev-stack": "ts-node-dev --respawn --ignore-watch node_modules src/runner.stack.ts",
+		"dev-queue": "ts-node-dev --respawn --ignore-watch node_modules src/runner.queue.ts"
 	},
 	"devDependencies": {
 		"@types/node": "^20.2.5",

@@ -1,9 +1,11 @@
-import type { Pointer } from "../types"
+import type { StackPointer } from "../types"
 
 export class Stack<T> {
+	readonly ID: number
 	private nodes: T[] = []
 	private maxSize: number = 42
-	private pointer: Pointer = {
+	private pointer: StackPointer = {
+		type: "Stack",
 		top: 0,
 		bottom: 0,
 	}
@@ -22,6 +24,8 @@ export class Stack<T> {
 		let index = this.nodes.length - 1
 		while (index >= 0 && this.nodes[index] === undefined) index--
 		this.lastNotEmptyIndex = index
+
+		this.ID = Math.floor(Math.random() * 1000000000)
 	}
 
 	get length(): number {
@@ -88,6 +92,7 @@ export class Stack<T> {
 		if (this.isEmpty)
 			throw new Error("You cannot pop anything, Stack is empty now.")
 
+		this.top--
 		return this.nodes.pop()
 	}
 
