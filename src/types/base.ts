@@ -1,5 +1,5 @@
 export interface Pointer {
-	type: "Stack" | "Queue"
+	type: "Stack" | "Queue" | "LinkedList"
 }
 
 export interface StackPointer extends Pointer {
@@ -10,4 +10,16 @@ export interface StackPointer extends Pointer {
 export interface QueuePointer extends Pointer {
 	front: number
 	rear: number
+}
+
+export interface SLListPointer extends Pointer {
+	next: number
+}
+
+export interface DLListPointer extends SLListPointer {
+	prev: number
+}
+
+export interface SLListNode extends SLListPointer {
+	element: any
 }

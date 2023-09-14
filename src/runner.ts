@@ -1,7 +1,6 @@
 import { Stack } from "./class/stack"
 import { Queue } from "./class/queue"
 
-// 模拟一个队列，队列中的成员是栈，按顺序完成一些待完成的工作
 const queue = new Queue()
 const stack1 = new Stack(
 	{ todo: "eat", done: false },
@@ -19,6 +18,6 @@ queue.push(stack1)
 queue.push(stack2)
 
 stack1.MaxSize = 5
-stack1.push({ todo: "play", done: false })
+stack1.push({ todo: "play", done: true })
 
-console.log(queue.pop(), queue)
+console.log(queue.front)
